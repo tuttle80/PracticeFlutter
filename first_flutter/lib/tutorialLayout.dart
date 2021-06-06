@@ -19,6 +19,51 @@ class TutorialApp extends StatelessWidget {
   }
 }
 
+
+
+class FavoriteWidget extends StatefulWidget {
+  @override
+  _FavoriteWidgetState createState() => _FavoriteWidgetState();
+}
+
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+
+  bool _isFavorited = true;
+  int _count = 41;
+
+  void _toggleFavorite() {
+    setState(() {
+      _isFavorited = !_isFavorited;
+      _count += (_isFavorited) ? 1 : -1;
+    });
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //return Icon(Icons.star);
+    return Row (
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.all(20),
+          child: IconButton(
+            icon: _isFavorited ? Icon(Icons.star) : Icon(Icons.star_outline),
+            color: Colors.red[500],
+            onPressed: _toggleFavorite,
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          child: Container(
+            child: Text("$_count"),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class TutorialAppPage2 extends StatelessWidget {
   Widget selectionLayout = Container(
     margin: const EdgeInsets.all(20),
@@ -43,13 +88,7 @@ class TutorialAppPage2 extends StatelessWidget {
             ],
           ),
         ),
-        Icon(
-          Icons.star,
-          color: Colors.red,
-        ),
-        Text(
-            "41"
-        ),
+        FavoriteWidget(),
       ],
     ),
   );
@@ -117,7 +156,7 @@ class TutorialAppPage2 extends StatelessWidget {
       //  ),
 
       // Body
-      body: Column (
+      body: ListView (
         children: [
           Image.asset(
             "images/lake.jpg",
@@ -140,10 +179,55 @@ class TutorialAppPage2 extends StatelessWidget {
             ),
           ),
 
+          Container(
+            margin: EdgeInsets.only(left: 20, right: 20),
+            child : TapboxA(),
+          ),
         ],
       ),
 
     );
 
+  }
+
+
+}
+
+// ----------------------------------------------------------
+class TapboxA extends StatefulWidget {
+  @override
+  _TapboxAState createState() => _TapboxAState();
+}
+
+class _TapboxAState extends State<TapboxA> {
+  bool _isActive = false;
+
+  void _handleTap() {
+    setState(() {
+      _isActive = !_isActive;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: Container(
+        child: Center(
+          child: Text(
+            _isActive ? "Active" : "Inactive",
+            style: TextStyle(
+              fontSize: 32.0,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        width: 200.0,
+        height: 100.0,
+        decoration: BoxDecoration(
+          color: _isActive ? Colors.lightGreen[700] : Colors.grey[600],
+        ),
+      ),
+    );
   }
 }
